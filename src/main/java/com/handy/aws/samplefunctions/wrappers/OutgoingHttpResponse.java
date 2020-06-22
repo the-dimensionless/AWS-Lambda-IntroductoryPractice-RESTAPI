@@ -1,4 +1,4 @@
-package com.handy.aws.samplefunctions;
+package com.handy.aws.samplefunctions.wrappers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +37,11 @@ public class OutgoingHttpResponse {
 	public OutgoingHttpResponse() {
 		super();
 		this.headers.put("Content-Type", "application/json");
+	}
+	public OutgoingHttpResponse(Product [] products) {
+		this();
+		Gson gson = new Gson();
+		this.body = gson.toJson(products);
 	}
 
 }

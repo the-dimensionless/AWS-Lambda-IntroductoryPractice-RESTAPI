@@ -1,4 +1,4 @@
-package com.handy.aws.samplefunctions;
+package com.handy.aws.samplefunctions.wrappers;
 
 import java.util.Map;
 
