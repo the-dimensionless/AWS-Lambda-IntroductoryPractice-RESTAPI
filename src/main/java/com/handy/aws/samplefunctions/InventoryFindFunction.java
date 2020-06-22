@@ -2,6 +2,8 @@ package com.handy.aws.samplefunctions;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Optional;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -20,7 +22,12 @@ public class InventoryFindFunction implements RequestHandler<Object, String> {
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
         
-        // Specify Region of access
+        return getProductById(102).toString();
+    }
+
+	private Product getProductById(int productId) {
+		
+		// Specify Region of access
         Region region = Region.AP_SOUTH_1;
         
         // Build a client
@@ -42,7 +49,14 @@ public class InventoryFindFunction implements RequestHandler<Object, String> {
         Gson gson = new Gson();
         products = gson.fromJson(br, Product[].class);
         
-        return products[0].toString();
-    }
+
+		Optional<Product> optional = Arrays.stream(products).filter(product -> product.getId() == productId).findFirst();
+		
+		if (optional.isPresent()) {
+			return optional.get();
+		} else {
+			return null;
+		}
+	}
 
 }
