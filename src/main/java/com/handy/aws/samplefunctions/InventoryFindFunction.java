@@ -1,7 +1,6 @@
 package com.handy.aws.samplefunctions;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -14,10 +13,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
 import com.google.gson.Gson;
 import com.handy.aws.samplefunctions.pojos.Product;
-
-
-
-
 
 public class InventoryFindFunction implements RequestHandler<Object, String> {
 
@@ -34,29 +29,11 @@ public class InventoryFindFunction implements RequestHandler<Object, String> {
         // Store the response
         ResponseInputStream<?> objectData = s3Client.getObject(GetObjectRequest.builder()
         		.bucket("handy-inventory-data-sample")
-        		/*.key("simple.txt")*/
         		.key("tool-catalog.json")
         		.build());
         
-        
-        
         InputStreamReader isr = new InputStreamReader(objectData);
         BufferedReader br = new BufferedReader(isr);
-        
-        // Read Contents of text file
-        
-        /* Code --> If the resource is a text file like above simple.txt
-        String textualData = null;
-        
-        try {
-			textualData = br.readLine();
-			br.close();
-		} catch (IOException e) {
-			context.getLogger().log("An exception was generated while attempting to readlIne");
-		}
-        
-        return textualData;
-        */
         
         // Reading json array with GSON
         
