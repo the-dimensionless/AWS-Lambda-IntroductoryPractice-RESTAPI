@@ -30,6 +30,7 @@ implements RequestHandler<HttpRequest, OutgoingHttpResponse> {
 		}
 		
 		OutgoingHttpResponse res = new OutgoingHttpResponse();
+		res.setBody("Some problem occurred during saving!");
 		res.setStatusCode("500");
 		return res;
 	}
