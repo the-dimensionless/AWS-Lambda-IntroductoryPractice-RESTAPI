@@ -7,25 +7,29 @@ import java.util.Optional;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.google.gson.Gson;
+import com.handy.aws.samplefunctions.pojos.Product;
 
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
-import com.google.gson.Gson;
-import com.handy.aws.samplefunctions.pojos.Product;
-
-public class InventoryFindFunction implements RequestHandler<Object, String> {
+public class InventoryFindFunction implements RequestHandler<IncomingHttpRequest, OutgoingHttpResponse> {
 
     @Override
-    public String handleRequest(Object input, Context context) {
-        context.getLogger().log("Input: " + input);
+    public OutgoingHttpResponse handleRequest(IncomingHttpRequest incomingRequest, Context context) {
+        context.getLogger().log("Input: " + incomingRequest);
         
-        return getProductById(102).toString();
+        String id = (String)incomingRequest.getQueryStringParameters().get("id");
+        Integer productId = Integer.parseInt(id);
+        
+        Product product = getProductById(productId);
+        
+        return new OutgoingHttpResponse(product);
     }
 
-	private Product getProductById(int productId) {
+	private Product getProductById(Integer productId) {
 		
 		// Specify Region of access
         Region region = Region.AP_SOUTH_1;
